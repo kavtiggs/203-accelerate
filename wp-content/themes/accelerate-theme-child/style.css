@@ -14,11 +14,9 @@ Text Domain:  accelerate-theme-child
     background: url("img/taxi-photo.jpg") no-repeat scroll right center / cover rgba(0, 0, 0, 0);
     text-align: center;
 }
-
 #masthead {
     background: none repeat scroll 0 0 #45ac9d;
 }
-
 .button {
     background: #45ac9d;
 }
@@ -43,3 +41,40 @@ Text Domain:  accelerate-theme-child
 	text-transform: uppercase;
 }
 
+/*Case Studies*/
+.case-study {
+    clear: both;
+}
+.case-study h2 {
+    font-family: 'Open Sans Semibold';
+    font-weight: 700;
+    font-size: 1.5em;
+}
+.case-study h4 {
+    font-family:'Open Sans Regular';
+    font-size: .875em;
+    margin: 1em 0;
+    }
+.case-study h4 span {
+    color: #878787;
+}
+.case-study-sidebar {
+    width: 300px;
+    float: left;
+    margin-right: 2em;
+}
+.case-study-sidebar p {
+    margin: 2em 0;
+}
+
+div.container{
+    width: 600px;
+    float:right;
+}
+div.case-study-images {
+    margin-top: 3em;
+}
+div.case-study-images img {
+    width: 100%;
+    margin-bottom: 3.125em;
+}
