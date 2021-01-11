@@ -67,11 +67,9 @@ Text Domain:  accelerate-theme-child
     margin: 2em 0;
 }
 
-div.container{
-    width: 600px;
-    float:right;
-}
 div.case-study-images {
+    width: 600px;
+    float: left;
     margin-top: 3em;
 }
 div.case-study-images img {
