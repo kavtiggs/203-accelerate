@@ -26,7 +26,7 @@ class BVFSCallback extends BVCallbackBase {
 			if (is_link($absfile)) {
 				$fdata["link"] = @readlink($absfile);
 			}
-			if ($md5 === true) {
+			if ($md5 === true && !is_dir($absfile)) {
 				$fdata["md5"] = $this->calculateMd5($absfile, array(), 0, 0, 0);
 			}
 		} else {
@@ -196,7 +196,7 @@ class BVFSCallback extends BVCallbackBase {
 				$result["missingfiles"][] = $file;
 				continue;
 			}
-			if ($md5 === true) {
+			if ($md5 === true && !is_dir($absfile)) {
 				$fdata["md5"] = $this->calculateMd5($absfile, $fdata, $offset, $limit, $bsize);
 			}
 			$result["stats"][] = $fdata;
@@ -245,8 +245,6 @@ class BVFSCallback extends BVCallbackBase {
 	function process($request) {
 		$params = $request->params;
 		$stream_init_info = BVStream::startStream($this->account, $request);
-		
-		
 
 		if (array_key_exists('stream', $stream_init_info)) {
 			$this->stream = $stream_init_info['stream'];

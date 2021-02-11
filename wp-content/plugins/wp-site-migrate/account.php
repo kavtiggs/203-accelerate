@@ -84,6 +84,39 @@ if (!class_exists('WPEAccount')) :
 			return $accountsByPlugname;
 		}
 
+		public static function accountsByType($settings, $account_type) {
+			$accounts = self::allAccounts($settings);
+			$accounts_by_type = array();
+			foreach ($accounts as $pubkey => $value) {
+				if (array_key_exists('account_type', $value) && $value['account_type'] === $account_type) {
+					$accounts_by_type[$pubkey] = $value;
+				}
+			}
+			return $accounts_by_type;
+		}
+
+		public static function accountsByGid($settings, $account_gid) {
+			$accounts = self::allAccounts($settings);
+			$accounts_by_gid = array();
+			foreach ($accounts as $pubkey => $value) {
+				if (array_key_exists('account_gid', $value) && $value['account_gid'] === $account_gid) {
+					$accounts_by_gid[$pubkey] = $value;
+				}
+			}
+			return $accounts_by_gid;
+		}
+
+		public static function accountsByPattern($settings, $search_key, $search_pattern) {
+			$accounts = self::allAccounts($settings);
+			$accounts_by_pattern = array();
+			foreach ($accounts as $pubkey => $value) {
+				if (array_key_exists($search_key, $value) && preg_match($search_pattern, $value[$search_key]) == 1) {
+					$accounts_by_pattern[$pubkey] = $value;
+				}
+			}
+			return $accounts_by_pattern;
+		}
+
 		public static function isConfigured($settings) {
 			$accounts = self::accountsByPlugname($settings);
 			return (sizeof($accounts) >= 1);
@@ -155,16 +188,22 @@ if (!class_exists('WPEAccount')) :
 			$this->settings->updateOption('bvLastRecvTime', $time);
 			return 1;
 		}
-	
+
 		public function updateInfo($info) {
 			$accounts = self::allAccounts($this->settings);
-			$plugname = self::getPlugName($this->settings);
+			$plugname = $info["plugname"];
+			$account_type = $info["account_type"];
 			$pubkey = $info['pubkey'];
 			if (!array_key_exists($pubkey, $accounts)) {
 				$accounts[$pubkey] = array();
 			}
+			if (array_key_exists('secret', $info)) {
+				$accounts[$pubkey]['secret'] = $info['secret'];
+			}
+			$accounts[$pubkey]['account_gid'] = $info['account_gid'];
 			$accounts[$pubkey]['lastbackuptime'] = time();
 			$accounts[$pubkey][$plugname] = true;
+			$accounts[$pubkey]['account_type'] = $account_type;
 			$accounts[$pubkey]['url'] = $info['url'];
 			$accounts[$pubkey]['email'] = $info['email'];
 			self::update($this->settings, $accounts);
@@ -175,6 +214,28 @@ if (!class_exists('WPEAccount')) :
 			if (array_key_exists($pubkey, $accounts)) {
 				unset($accounts[$pubkey]);
 				self::update($settings, $accounts);
+				return true;
+			}
+			return false;
+		}
+
+		public static function removeByAccountType($settings, $account_type) {
+			$accounts = WPEAccount::accountsByType($settings, $account_type);
+			if (sizeof($accounts) >= 1) {
+				foreach ($accounts as $pubkey => $value) {
+					WPEAccount::remove($settings, $pubkey);
+				}
+				return true;
+			}
+			return false;
+		}
+
+		public static function removeByAccountGid($settings, $account_gid) {
+			$accounts = WPEAccount::accountsByGid($settings, $account_gid);
+			if (sizeof($accounts) >= 1) {
+				foreach ($accounts as $pubkey => $value) {
+					WPEAccount::remove($settings, $pubkey);
+				}
 				return true;
 			}
 			return false;

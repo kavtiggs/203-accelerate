@@ -24,19 +24,15 @@ class BVAccountCallback extends BVCallbackBase {
 			$resp = array("status" => WPEAccount::remove($this->settings, $params['public']));
 			break;
 		case "updt":
-			$info = array();
-			$info['email'] = $params['email'];
-			$info['url'] = $params['url'];
-			$info['pubkey'] = $params['pubkey'];
-			$account->updateInfo($info);
+			$account->updateInfo($params);
 			$resp = array("status" => WPEAccount::exists($this->settings, $params['pubkey']));
 			break;
 		case "updtapikey":
 			WPEAccount::updateApiPublicKey($this->settings, $params['pubkey']);
 			$resp = array("status" => $this->settings->getOption(WPEAccount::$api_public_key));
 			break;
-		case "rmdefsec":
-			$resp = array("status" => $settings->deleteOption('bvDefaultSecret'));
+		case "rmbvscrt":
+			$resp = array("status" => $settings->deleteOption('bvSecretKey'));
 			break;
 		case "rmbvkeys":
 			$resp = array("status" => $settings->deleteOption('bvKeys'));

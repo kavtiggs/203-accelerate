@@ -15,7 +15,6 @@ class BVDBCallback extends BVCallbackBase {
 		$this->db = $callback_handler->db;
 		$this->account = $callback_handler->account;
 		$this->siteinfo = $callback_handler->siteinfo;
-		$this->bvinfo = $callback_handler->bvinfo;
 	}
 
 	public function getLastID($pkeys, $end_row) {
@@ -43,7 +42,9 @@ class BVDBCallback extends BVCallbackBase {
 			$data = array();
 			$data["offset"] = $offset;
 			$data["size"] = $srows;
-			$data["md5"] = md5(serialize($rows));
+			$serialized_rows = serialize($rows);
+			$data['md5'] = md5($serialized_rows);
+			$data['length'] = strlen($serialized_rows);
 			array_push($tinfo, $data);
 			if (!empty($pkeys) && $srows > 0) {
 				$end_row = end($rows);
@@ -64,12 +65,64 @@ class BVDBCallback extends BVCallbackBase {
 		return $result;
 	}
 
+	public function getCreateTableQueries($tables) {
+		$resp = array();
+		foreach($tables as $table) {
+			$tname = urldecode($table);
+			$resp[$tname] = array("create" => $this->db->showTableCreate($table)); 
+		}
+		return $resp;
+	}
+
+	public function checkTables($tables, $type) {
+		$resp = array();
+		foreach($tables as $table) {
+			$tname = urldecode($table);
+			$resp[$tname] = array("status" => $this->db->checkTable($table, $type));
+		}
+		return $resp;
+	}
+
+	public function describeTables($tables) {
+		$resp = array();
+		foreach($tables as $table) {
+			$tname = urldecode($table);
+			$resp[$tname] = array("description" => $this->db->describeTable($table));
+		}
+		return $resp;
+	}
+
+	public function checkTablesExist($tables) {
+		$resp = array();
+		foreach($tables as $table) {
+			$tname = urldecode($table);
+			$resp[$tname] = array("tblexists" => $this->db->isTablePresent($table));
+		}
+		return $resp;
+	}
+
+	public function getTablesRowCount($tables) {
+		$resp = array();
+		foreach($tables as $table) {
+			$tname = urldecode($table);
+			$resp[$tname] = array("count" => $this->db->rowsCount($table));
+		}
+		return $resp;
+	}
+
+	public function getTablesKeys($tables) {
+		$resp = array();
+		foreach($tables as $table) {
+			$tname = urldecode($table);
+			$resp[$tname] = array("keys" => $this->db->tableKeys($table));
+		}
+		return $resp;
+	}
+
 	public function process($request) {
 		$db = $this->db;
 		$params = $request->params;
 		$stream_init_info = BVStream::startStream($this->account, $request);
-
-		
 
 		if (array_key_exists('stream', $stream_init_info)) {
 			$this->stream = $stream_init_info['stream'];
@@ -100,6 +153,31 @@ class BVDBCallback extends BVCallbackBase {
 			case "gettcrt":
 				$table = urldecode($params['table']);
 				$resp = array("create" => $db->showTableCreate($table));
+				break;
+			case "tblskys":
+				$tables = $params['tables'];
+				$resp = $this->getTablesKeys($tables);
+				break;
+			case "getmlticrt":
+				$tables = $params['tables'];
+				$resp = $this->getCreateTableQueries($tables);
+				break;
+			case "desctbls":
+				$tables = $params['tables'];
+				$resp = $this->describeTables($tables);
+				break;
+			case "mltirwscount":
+				$tables = $params['tables'];
+				$resp = $this->getTablesRowCount($tables);
+				break;
+			case "chktabls":
+				$tables = $params['tables'];
+				$type = urldecode($params['type']);
+				$resp = $this->checkTables($tables, $type);
+				break;
+			case "chktablsxist":
+				$tables = $params['tables'];
+				$resp = $this->checkTablesExist($tables);
 				break;
 			case "getrowscount":
 				$table = urldecode($params['table']);

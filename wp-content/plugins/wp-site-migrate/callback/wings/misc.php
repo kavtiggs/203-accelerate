@@ -8,12 +8,14 @@ class BVMiscCallback extends BVCallbackBase {
 	public $bvinfo;
 	public $siteinfo;
 	public $account;
+	public $bvapi;
 
 	public function __construct($callback_handler) {
 		$this->settings = $callback_handler->settings;
 		$this->siteinfo = $callback_handler->siteinfo;
 		$this->account = $callback_handler->account;
 		$this->bvinfo = new WPEInfo($callback_handler->settings);
+		$this->bvapi = new WPEWPAPI($callback_handler->settings);
 	}
 
 	public function refreshPluginUpdates() {
@@ -52,6 +54,12 @@ class BVMiscCallback extends BVCallbackBase {
 			$resp = array_merge($resp, $this->siteinfo->info());
 			$resp = array_merge($resp, $this->account->info());
 			$resp = array_merge($resp, $this->bvinfo->info());
+			break;
+		case "pngbv":
+			$info = array();
+			$this->siteinfo->basic($info);
+			$this->bvapi->pingbv('/bvapi/pingbv', $info);
+			$resp = array("status" => true);
 			break;
 		case "enablebadge":
 			$option = $bvinfo->badgeinfo;
@@ -94,8 +102,12 @@ class BVMiscCallback extends BVCallbackBase {
 		case "dlttrsnt":
 			$resp = array("dlttrsnt" => $settings->deleteTransient($params['key']));
 			break;
-		case "setmanulsignup":
-			$resp = array("setmanulsignup" => $settings->updateOption("bvmanualsignup", true));
+		case "setbvss":
+			$resp = array("status" => $settings->updateOption('bv_site_settings', $params['bv_site_settings']));
+			break;
+		case "stsrvcs":
+			$settings->updateOption($bvinfo->services_option_name, $params['services']);
+			$resp = array("stsrvcs" => $settings->getOption($bvinfo->services_option_name));
 			break;
 		default:
 			$resp = false;

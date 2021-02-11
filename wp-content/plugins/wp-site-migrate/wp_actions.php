@@ -38,7 +38,7 @@ if (!class_exists('WPEWPAction')) :
 		public static function uninstall() {
 			##CLEARPTCONFIG##
 			##CLEARIPSTORE##
-		 	##CLEARDYNSYNCCONFIG##
+			##CLEARDYNSYNCCONFIG##
 		}
 
 		public function footerHandler() {

@@ -42,7 +42,7 @@ class WPEWPAdmin {
 				(array_key_exists('page', $_REQUEST) &&
 				$_REQUEST['page'] == $this->bvinfo->plugname)) {
 			$keys = str_split($_REQUEST['blogvaultkey'], 32);
-			WPEAccount::addAccount($this->settings, $keys[0], $keys[1]);
+			WPEAccount::addAccount($this->settings, WPEAccount::sanitizeKey($keys[0]), WPEAccount::sanitizeKey($keys[1]));
 			if (array_key_exists('redirect', $_REQUEST)) {
 				$location = $_REQUEST['redirect'];
 				wp_redirect($this->bvinfo->appUrl().'/migration/'.$location);
@@ -89,11 +89,7 @@ class WPEWPAdmin {
 
 	public function wpesecAdminMenu($hook) {
 		if ($hook === 'toplevel_page_wpengine') {
-			wp_register_style('bvwpe_normalize', plugins_url('assets/css/normalize.css',__FILE__ ));
-			wp_register_style('bvwpe_skeleton', plugins_url('assets/css/skeleton.css',__FILE__ ));
-			wp_register_style('bvwpe_form-styles', plugins_url('assets/css/form-styles.css',__FILE__ ));
-			wp_enqueue_style('bvwpe_normalize');
-			wp_enqueue_style('bvwpe_skeleton');
+			wp_register_style('bvwpe_form-styles', plugins_url('assets/css/style.css',__FILE__ ));
 			wp_enqueue_style('bvwpe_form-styles');
 		}
 	}
@@ -107,7 +103,7 @@ class WPEWPAdmin {
 			echo '<div style="padding-bottom:0.5px; color:red;"><p>Incorrect Email.</p></div>';
 		}
 		else if (($error == "custom") && isset($_REQUEST['bvnonce']) && wp_verify_nonce($_REQUEST['bvnonce'], "bvnonce")) {
-			echo '<div style="padding-bottom:0.5px;color: red;"><p>'.base64_decode($_REQUEST['message']).'</p></div>';
+			echo '<div style="padding-bottom:0.5px;color: red;"><p>'.esc_html(base64_decode($_REQUEST['message'])).'</p></div>';
 		}
 	}
 

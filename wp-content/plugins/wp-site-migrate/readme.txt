@@ -4,7 +4,7 @@ Tags: wpe, wpengine, migration
 Requires at least: 4.0
 Tested up to: 5.6
 Requires PHP: 5.4.0
-Stable tag: 4.35
+Stable tag: 4.54
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,6 +79,11 @@ That's easy! [Signup here](http://wpengine.com/plans/).
 2. BlogVault dashboard showing live updates.
 
 == Changelog ==
+
+= 4.54 =
+* Upgrading to new UI
+* Added Support for Multi Table Callbacks
+
 = 4.35 =
 * Improved scanfiles and filelist api
 

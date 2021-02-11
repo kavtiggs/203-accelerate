@@ -4,26 +4,39 @@ if (!defined('ABSPATH')) exit;
 if (!class_exists('WPEInfo')) :
 	class WPEInfo {
 		public $settings;
+		public $config;
 		public $plugname = 'wpengine';
 		public $brandname = 'WPEngine Migration';
 		public $badgeinfo = 'wpebadge';
 		public $ip_header_option = 'wpeipheader';
 		public $brand_option = 'wpebrand';
-		public $version = '4.35';
+		public $version = '4.54';
 		public $webpage = 'https://wpengine.com';
 		public $appurl = 'https://wpengine.blogvault.net';
 		public $slug = 'wp-site-migrate/wpengine.php';
 		public $plug_redirect = 'wperedirect';
-		public $logo = '../assets/img/wpengine-logo.png';
+		public $logo = '../assets/img/wpe-logo.svg';
 		public $brand_icon = '/assets/img/favicon.ico';
+		public $services_option_name = 'BVSERVICESOPTIONNAME';
 
 		public function __construct($settings) {
 			$this->settings = $settings;
+			$this->config = $this->settings->getOption($this->services_option_name);
 		}
 
-		public function isManualSignup() {
-			$scanOption = $this->settings->getOption('bvmanualsignup');
-			return (isset($scanOption) && $scanOption == 1);
+		public function canSetCWBranding() {
+			if (WPEWPSiteInfo::isCWServer()) {
+
+				$bot_protect_accounts = WPEAccount::accountsByType($this->settings, 'botprotect');
+				if (sizeof($bot_protect_accounts) >= 1)
+					return true;
+
+				$bot_protect_accounts = WPEAccount::accountsByPattern($this->settings, 'email', '/@cw_user\.com$/');
+				if (sizeof($bot_protect_accounts) >= 1)
+					return true;
+			}
+
+			return false;
 		}
 
 		public function getBrandInfo() {
@@ -77,6 +90,14 @@ if (!class_exists('WPEInfo')) :
 		public function isDynSyncModuleEnabled() {
 			return ($this->settings->getOption('bvdynplug') === $this->plugname) &&
 				$this->isActivePlugin();
+		}
+
+		public function isServiceActive($service) {
+			$bvconfig = $this->config;
+			if ($bvconfig && array_key_exists('services', $bvconfig)) {
+				return in_array($service, $bvconfig['services']) && $this->isActivePlugin();
+			}
+			return false;
 		}
 
 		public function isActivateRedirectSet() {

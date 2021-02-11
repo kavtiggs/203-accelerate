@@ -129,6 +129,7 @@ class BVInfoCallback extends BVCallbackBase {
 			'dbprefix' => $db->dbprefix(),
 			'wpmu' => $siteinfo->isMultisite(),
 			'mainsite' => $siteinfo->isMainSite(),
+			'main_site_id' => $siteinfo->getMainSiteId(),
 			'name' => get_bloginfo('name'),
 			'siteurl' => $siteinfo->siteurl(),
 			'homeurl' => $siteinfo->homeurl(),
@@ -210,6 +211,7 @@ class BVInfoCallback extends BVCallbackBase {
 		$data['protect'] = $settings->getOption('bvptconf');
 		$data['brand'] = $settings->getOption($this->bvinfo->brand_option);
 		$data['badgeinfo'] = $settings->getOption($this->bvinfo->badgeinfo);
+		$data[$services_option_name] = $this->bvinfo->config;
 	}
 
 	public function dbconf(&$info) {
