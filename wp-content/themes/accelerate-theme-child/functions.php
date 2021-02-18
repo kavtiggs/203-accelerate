@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
 * Accelerate Marketing Child functions and definitions
 *
@@ -35,3 +35,19 @@ function create_custom_post_types() {
     );
 }
 add_action( 'init', 'create_custom_post_types' );
+
+//Custom template function
+function create_custom_page_template() {
+    register_post_type( 'services',
+        array(
+            'labels' => array(
+                'name' => __( 'Services' ),
+                'singular_name' => __( 'Service' )
+            ),
+            'public' => true,
+             array( 'slug' => 'about' ),
+        )
+    );
+}
+add_action( 'init', 'create_custom_page_template' );
+

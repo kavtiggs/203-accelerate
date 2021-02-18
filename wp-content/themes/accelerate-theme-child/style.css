@@ -75,7 +75,8 @@ Text Domain:  accelerate-theme-child
 .fa {
     width: 5px;
     height: 5px;
-    border-radius: 90%;
+    padding: 5px;
+    border-radius: 50%;
     padding: 5px;
     color: white;
     background-color: black;
@@ -119,6 +120,7 @@ div.case-study-images {
     width: 600px;
     float: left;
     margin-top: 3em;
+    padding-left: 2em;
 }
 
 div.case-study-images img {
@@ -128,18 +130,10 @@ div.case-study-images img {
 }
 
 /*Contact Page*/
-
-.main-content h2{
-    width: 460px;
-    display: flex;
-    justify-content: center;
+.has-text-align-left {
+    width: 600px;
 }
 
-.main-content p {
-    width: 620px;
-    display: flex;
-    justify-content: center;
-}
 .main-content .nf-field-label label {
     font-weight: normal;
 }
@@ -159,7 +153,8 @@ div.case-study-images img {
     display: none;
 }
 
-#nf-field-1-wrap, #nf-field-2-wrap{
+#nf-field-1-wrap,
+#nf-field-2-wrap {
     width: 300px;
 }
 
@@ -173,6 +168,95 @@ div.case-study-images img {
     background: #45ac9d;
 }
 
-.nf-response-msg h1{
-    color:#45ac9d;
+.nf-response-msg h1 {
+    color: #45ac9d;
+}
+
+/*About Page*/
+.main-content .heading {
+    width: 600px;
+    color: white;
+    font-size: 25px;
+    font: 'Open Sans Semibold';
+}
+
+.services {
+    width: auto;
+}
+
+.main-service {
+    text-align: center;
+}
+
+.service-tagline {
+    width:55%;
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 25px;
+}
+
+.about-services li {
+    list-style: none;
+}
+
+.individual-services {
+    font-size: 25px;
+    font: 'Open Sans Semibold';
+    display: flex;
+    justify-content: center;
+    vertical-align: inherit;
+}
+
+.li-individual-services {
+    width: auto;
+    margin-top: 50px;
+}
+
+.individual-services h3 {
+    font: 'Open Sans Semibold';
+    line-height: 1.75;
+}
+
+.individual-services:nth-child(even) {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
+.individual-icon {
+    padding-left: 75px;
+    padding-right: 50px;
+}
+
+.individual-text {
+    width: 50%;
+    margin-left: 100px;
+    margin-bottom: 50px;
+}
+
+.about-cta {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 0 50px;
+}
+
+.contact-us {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-content:inherit;
+    border-top: 1px solid #bfbfbf;
+    padding: 0 50px;    
+}
+
+.contact-us h2 {
+    font: 'Open Sans Bold';
+   }
+
+.button {
+    height: 50px;
+    margin-top: 40px;
+    margin-left: 30px;
 }
