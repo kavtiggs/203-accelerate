@@ -260,3 +260,35 @@ div.case-study-images img {
     margin-top: 40px;
     margin-left: 30px;
 }
+
+/* 404 Page*/
+
+.content-area {
+      background: url("img/pexels-valentin-antonucci-841286.jpg") no-repeat scroll right center / cover rgba(0, 0, 0, 0);
+   }
+   
+.page-wrapper{
+  margin: 75px;
+  padding: 25px;
+}
+
+.page-content {
+    margin-top: 75px;
+    padding-top: 30px;
+    text-align: center;
+}
+
+h1{
+font-size: 35px;
+} 
+
+h2{
+    font-size: 30px;
+}
+h1, h2 {
+    font-family: 'Oswald', sans-serif;
+    color: white;
+    margin: auto;
+    padding-top: 25px;
+}
+
