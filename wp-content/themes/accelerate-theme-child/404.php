@@ -17,12 +17,12 @@
         <div id="content" class="site-content" role="main">
  
             <header class="page-header">
-                <h1 class="page-title"><?php _e( 'Seems Like You Got Lost' ); ?></h1>
+                <h1 class="not-found-page-title"><?php _e( 'Seems Like You Got Lost' ); ?></h1>
             </header>
                
             <div class="page-wrapper">
                 <div class="page-content">
-                    <h2><?php _e( 'This is somewhat embarrassing, isn’t it? <br>It looks like nothing was found at this location.' ); ?></h2>
+                    <h2 class="not-found-page-subheading"><?php _e( 'This is somewhat embarrassing, isn’t it? <br>It looks like nothing was found at this location.' ); ?></h2>
              
                 <!-- .page-content -->    
             </div><!-- .page-wrapper -->
